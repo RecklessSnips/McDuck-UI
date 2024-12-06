@@ -36,7 +36,7 @@
     <h1 class="ms-3">{{ title }}</h1>
     <Divider />
     <div class="card">
-      <DataView :value="productList" :layout="layout">
+      <DataView :value="productList" dataKey="id">
         <template #grid="slotProps">
           <div class="row g-0">
             <div
