@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "start": "npx serve -s dist",
+    "build": "vite build",
+    "start": "node server.js",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
@@ -19,6 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "axios": "^1.7.3",
+    "express": "^4.21.2",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
