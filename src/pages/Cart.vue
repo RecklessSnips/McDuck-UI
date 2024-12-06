@@ -7,7 +7,7 @@
     </div>
     <div v-if="isReady" class="card">
       <h1>Your Shopping Cart</h1>
-      <DataView :value="productList" :layout="layout">
+      <DataView :value="productList" dataKey="id">
         <template #list="slotProps">
           <div class="container-fluid px-0">
             <div
@@ -113,7 +113,7 @@ const { visible, isLogin, username, currentUser, greeting } = useCurrentUser();
 
 const URL = import.meta.env.VITE_API_BASE_URL;
 let productList = reactive<Product[]>([]);
-const layout = ref("list");
+const layout = ref('list');
 let isReady = ref(false);
 const toast = useToast();
 let stopGetRandomProducts = ref(false);

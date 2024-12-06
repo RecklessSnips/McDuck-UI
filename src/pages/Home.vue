@@ -23,7 +23,7 @@ import Sidebar from '@/pages/Sidebar.vue'
 import Products from '@/pages/Product/Products.vue'
 import Product from '@/pages/Product/Products.vue'
 import Store from '@/pages/Store.vue'
-import DefaultProduct from '@/pages/Product/DefaultProduct.vue'
+// import DefaultProduct from '@/pages/Product/DefaultProduct.vue'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 

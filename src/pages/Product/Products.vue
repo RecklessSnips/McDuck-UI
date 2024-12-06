@@ -36,7 +36,7 @@
     <h1 class="ms-3">{{ title }}</h1>
     <Divider />
     <div v-if="isReady" class="card">
-      <DataView :value="productList" :layout="layout">
+      <DataView :value="productList" dataKey="id">
         <template #header>
           <div class="d-flex justify-content-end">
             <DataViewLayoutOptions v-model="layout" />
