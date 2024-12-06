@@ -9,6 +9,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.use(express.static(join(__dirname, "dist"))); // 假设 Vue 构建文件在 dist 目录
 
+// 配置 CORS
+app.use(cors());
+
 app.get("*", (req, res) => {
   res.sendFile(join(__dirname, "dist", "index.html")); // SPA入口文件
 });
