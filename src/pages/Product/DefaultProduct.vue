@@ -13,8 +13,8 @@
           v-model="checked"
           :pt="{
             root: {
-              style: 'width: 40px; height:20px'
-            }
+              style: 'width: 40px; height:20px',
+            },
           }"
         />
         <span class="switchtext">In Stock</span>
@@ -25,8 +25,8 @@
           placeholder="Sort by"
           :pt="{
             list: {
-              style: 'padding-left: 1rem'
-            }
+              style: 'padding-left: 1rem',
+            },
           }"
           class="dropdown w-full md:w-14rem"
         />
@@ -44,9 +44,13 @@
               :key="product.product_id"
               class="col-12 col-sm-6 col-md-4 col-xl-3 p-2"
             >
-              <div class="product card border-1 border border-secondary p-2 d-flex flex-column">
+              <div
+                class="product card border-1 border border-secondary p-2 d-flex flex-column"
+              >
                 <!-- 商品图片和 Tag -->
-                <div class="product-content d-flex justify-content-center align-items-center p-2">
+                <div
+                  class="product-content d-flex justify-content-center align-items-center p-2"
+                >
                   <div class="img-container">
                     <img
                       class="rounded-circle"
@@ -65,7 +69,9 @@
                 <!-- 商品描述 -->
                 <div class="pt-2 pb-1">
                   <!-- 商品类型，名称，评价 -->
-                  <div class="d-flex justify-content-between align-items-start gap-2">
+                  <div
+                    class="d-flex justify-content-between align-items-start gap-2"
+                  >
                     <div class="product-list" @click="checkProduct(product)">
                       <span class="font-weight-medium text-secondary text-sm">{{
                         product.author
@@ -90,7 +96,9 @@
                   </div>
                   <!-- 商品价格，购买按钮，收藏按钮 -->
                   <div class="d-flex flex-column gap-4 mt-4">
-                    <span class="h4 font-weight-bold text-dark">${{ product.price }}</span>
+                    <span class="h4 font-weight-bold text-dark"
+                      >${{ product.price }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -104,8 +112,8 @@
 
 <script lang="ts">
 export default {
-  name: 'DefaultProduct'
-}
+  name: "DefaultProduct",
+};
 </script>
 
 <script lang="ts" setup>
@@ -117,82 +125,85 @@ import {
   onBeforeMount,
   onUnmounted,
   onMounted,
-  onUpdated
-} from 'vue'
-import emitter from '@/util/emitter'
-import router from '@/router'
+  onUpdated,
+} from "vue";
+import emitter from "@/util/emitter";
+import router from "@/router";
 
 // Store (Pinia)
-import { useCurrentUserStore } from '@/stores/currentUser'
-import { storeToRefs } from 'pinia'
+import { useCurrentUserStore } from "@/stores/currentUser";
+import { storeToRefs } from "pinia";
+import type { Product } from "@/pages/Product/types";
 
-const currentUserStore = useCurrentUserStore()
-let { skipRandomProducts } = storeToRefs(currentUserStore)
+const currentUserStore = useCurrentUserStore();
+let { skipRandomProducts } = storeToRefs(currentUserStore);
 
-const URL = 'http://localhost:8080'
-let productList = ref<Product[]>([])
-let keyword = ref('')
-const layout = ref('grid')
-let isReady = ref(false)
+const URL = "http://localhost:8080";
+let productList = ref<Product[]>([]);
+let keyword = ref("");
+const layout = ref("grid");
+let isReady = ref(false);
 
-let checked = ref(false)
-let title = ref('')
+let checked = ref(false);
+let title = ref("");
 
-const sorting = ref()
+const sorting = ref();
 const sortOption = ref([
-  { name: 'Price Low-High', code: 'priceLowHigh' },
-  { name: 'Price High-Low', code: 'priceHighLow' },
-  { name: 'Rating Low-High', code: 'ratingLowHigh' },
-  { name: 'Rating High-Low', code: 'ratingHighLow' },
-  { name: 'Best Sellers', code: 'bestSellers' }
-])
+  { name: "Price Low-High", code: "priceLowHigh" },
+  { name: "Price High-Low", code: "priceHighLow" },
+  { name: "Rating Low-High", code: "ratingLowHigh" },
+  { name: "Rating High-Low", code: "ratingHighLow" },
+  { name: "Best Sellers", code: "bestSellers" },
+]);
 
 // Watch for sorting changes and apply sorting
 watch(sorting, (newSort) => {
   if (newSort) {
-    sortProductList(newSort.code)
+    sortProductList(newSort.code);
   }
-})
+});
 
 watch(checked, (newChecked) => {
   if (newChecked) {
-    productList.value = productList.value.filter((product) => product.stock_quantity > 0)
+    productList.value = productList.value.filter(
+      (product) => product.stock_quantity > 0
+    );
   } else {
-    productList.value = [...productList.value]
+    productList.value = [...productList.value];
   }
-})
+});
 
 const sortProductList = (sortCode: string) => {
   switch (sortCode) {
-    case 'priceLowHigh':
-      productList.value.sort((a, b) => a.price - b.price)
-      break
-    case 'priceHighLow':
-      productList.value.sort((a, b) => b.price - a.price)
-      break
-    case 'ratingLowHigh':
-      productList.value.sort((a, b) => a.review_star - b.review_star)
-      break
-    case 'ratingHighLow':
-      productList.value.sort((a, b) => b.review_star - a.review_star)
-      break
-    case 'bestSellers':
+    case "priceLowHigh":
+      productList.value.sort((a, b) => a.price - b.price);
+      break;
+    case "priceHighLow":
+      productList.value.sort((a, b) => b.price - a.price);
+      break;
+    case "ratingLowHigh":
+      productList.value.sort((a, b) => a.review_star - b.review_star);
+      break;
+    case "ratingHighLow":
+      productList.value.sort((a, b) => b.review_star - a.review_star);
+      break;
+    case "bestSellers":
       // 这里假设按库存数量从高到低排序
-      productList.value.sort((a, b) => a.stock_quantity - b.stock_quantity)
-      break
+      productList.value.sort((a, b) => a.stock_quantity - b.stock_quantity);
+      break;
     default:
-      break
+      break;
   }
-}
+};
 
 onMounted(() => {
   setTimeout(() => {
     if (!skipRandomProducts.value) {
-      console.log('WhattttTTT')
-      getRandomProducts()
+      console.log("WhattttTTT");
+      getRandomProducts();
     }
-  }, 10)
-})
+  }, 10);
+});
 
 /*
  每次返回主页，会加载这个component，所以这个emitter会被调用
@@ -201,126 +212,111 @@ onMounted(() => {
  2.还是从 productPage 点击了（返回搜索记录）按钮，返回的
  两者返回的数据不一样
  */
-emitter.on('getProductsByCategory', (data: any) => {
-  console.log(data)
-  skipRandomProducts.value = true
+emitter.on("getProductsByCategory", (data: any) => {
+  console.log(data);
+  skipRandomProducts.value = true;
   // 判断是否是从某个产品返回来的，为了保证当前搜索记录
-  if (typeof data.data === 'undefined') {
-    if (typeof data.keywords === 'undefined') {
-      console.log('No keywords! Perform randomSearch()')
-      isReady.value = true
-      productList.value.splice(0, productList.value.length)
-      getRandomProducts()
-    } else if (data.keywords != '') {
-      console.log('kkkkkk: ', data.keywords)
-      setCategory(data.keywords)
-      data.keywords = ''
+  if (typeof data.data === "undefined") {
+    if (typeof data.keywords === "undefined") {
+      console.log("No keywords! Perform randomSearch()");
+      isReady.value = true;
+      productList.value.splice(0, productList.value.length);
+      getRandomProducts();
+    } else if (data.keywords != "") {
+      console.log("kkkkkk: ", data.keywords);
+      setCategory(data.keywords);
+      data.keywords = "";
     }
   } else {
-    console.log('Products received!!!', data.data)
-    console.log('Keywords: ', data.keywords)
-    keyword.value = data.keywords
-    console.log('keyword:', keyword.value)
+    console.log("Products received!!!", data.data);
+    console.log("Keywords: ", data.keywords);
+    keyword.value = data.keywords;
+    console.log("keyword:", keyword.value);
     // 清空当前搜索的结果
-    productList.value.splice(0, productList.value.length)
+    productList.value.splice(0, productList.value.length);
     // 赋值给 productList，更新列表
-    productList.value = data.data
+    productList.value = data.data;
   }
-})
+});
 
 const getSeverity = (product: Product) => {
-  const quantity = product.stock_quantity
+  const quantity = product.stock_quantity;
   if (quantity > 500) {
-    return 'primary'
+    return "primary";
   } else if (quantity > 200) {
-    return 'success'
+    return "success";
   } else if (quantity > 90) {
-    return 'info'
+    return "info";
   } else if (quantity > 50) {
-    return 'warning'
+    return "warning";
   } else if (quantity > 10) {
-    return 'danger'
+    return "danger";
   }
-}
-
-// Product
-export interface Product {
-  product_id: string
-  category: string
-  product_name: string
-  author: string
-  description: string
-  price: number
-  stock_quantity: number
-  review_star: number
-  review_message: string
-  image_path: string
-  listing_date: string
-}
+};
 
 // 点击后，跳到当前商品的组件
 const checkProduct = async (product: Product) => {
   router.push({
-    path: '/productpage',
+    path: "/productpage",
     query: {
       currentProduct: JSON.stringify(product),
-      searchKeywords: keyword.value
-    }
-  })
-}
+      searchKeywords: keyword.value,
+    },
+  });
+};
 
 const getRandomProducts = () => {
   // 检查 stopGetRandomProducts 标志位
   // isReady.value = true
   fetch(`${URL}/api/getRandomProduct`, {
-    method: 'GET',
-    credentials: 'include',
+    method: "GET",
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json",
+    },
   })
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((products) => {
       // Object.assign(productList, products)
-      productList.value.push(...products)
-      console.log(productList.value)
-    })
-}
+      productList.value.push(...products);
+      console.log(productList.value);
+    });
+};
 
 const setCategory = (result: string) => {
-  console.log('result is: ', result)
+  console.log("result is: ", result);
   fetch(`${URL}/api/searchProductByCategory`, {
-    method: 'POST',
-    credentials: 'include',
+    method: "POST",
+    credentials: "include",
     headers: {
-      'Content-Type': 'text/plain'
+      "Content-Type": "text/plain",
     },
-    body: result
+    body: result,
   })
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((data) => {
-      console.log('Searched catagory: ', data)
+      console.log("Searched catagory: ", data);
       // 阻止再次调用getRandomProduct函数
-      skipRandomProducts.value = true
-      productList.value.splice(0, productList.value.length)
-      Object.assign(productList, data)
-      isReady.value = true
+      skipRandomProducts.value = true;
+      productList.value.splice(0, productList.value.length);
+      Object.assign(productList, data);
+      isReady.value = true;
       // stopGetRandomProducts.value = true
-      console.log(productList)
-    })
-}
+      console.log(productList);
+    });
+};
 
 // 在组件卸载时解绑事件
 onUnmounted(() => {
-  emitter.off('getProductsByCategory')
-  skipRandomProducts.value = false
-})
+  emitter.off("getProductsByCategory");
+  skipRandomProducts.value = false;
+});
 
-provide('getRandomProducts', getRandomProducts)
+provide("getRandomProducts", getRandomProducts);
 </script>
 
 <style scoped>

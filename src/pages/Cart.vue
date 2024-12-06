@@ -104,6 +104,7 @@ import { ref, reactive, watch, computed, onMounted, onUnmounted } from "vue";
 import emitter from "@/util/emitter";
 import { useToast } from "primevue/usetoast";
 import router from "@/router";
+import type { Product } from "@/pages/Product/types";
 
 // Hook
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -137,21 +138,6 @@ onMounted(async () => {
     }
   );
 });
-
-// Product
-export interface Product {
-  product_id: string;
-  category: string;
-  product_name: string;
-  author: string;
-  description: string;
-  price: number;
-  stock_quantity: number;
-  review_star: number;
-  review_message: string;
-  image_path: string;
-  listing_date: string;
-}
 
 // 因为这个hook是async的，直接在onMounted里调用会导致数据丢失，需要写成async形式
 const fetchProducts = async () => {

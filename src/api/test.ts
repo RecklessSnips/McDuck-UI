@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 export default {
-  getCategoryProducts(category) {
+  getCategoryProducts(category: any) {
     return api
       .post(`/api/getCategory`, category)
       .then((response) => response.data);

@@ -211,6 +211,7 @@ import router from "@/router";
 // Store (Pinia)
 import { useCurrentUserStore } from "@/stores/currentUser";
 import { storeToRefs } from "pinia";
+import type { Product } from "@/pages/Product/types";
 
 const currentUserStore = useCurrentUserStore();
 let { skipRandomProducts } = storeToRefs(currentUserStore);
@@ -218,7 +219,7 @@ let { skipRandomProducts } = storeToRefs(currentUserStore);
 const URL = import.meta.env.VITE_API_BASE_URL;
 let productList = reactive<Product[]>([]);
 let keyword = ref("");
-const layout = ref("grid");
+const layout = ref('grid');
 let isReady = ref(false);
 let title = ref("");
 let stopGetRandomProducts = ref(false);
@@ -255,21 +256,6 @@ const getSeverity = (product: Product) => {
     return "danger";
   }
 };
-
-// Product
-export interface Product {
-  product_id: string;
-  category: string;
-  product_name: string;
-  author: string;
-  description: string;
-  price: number;
-  stock_quantity: number;
-  review_star: number;
-  review_message: string;
-  image_path: string;
-  listing_date: string;
-}
 
 // 点击后，跳到当前商品的组件
 const checkProduct = (product: Product) => {

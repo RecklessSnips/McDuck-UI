@@ -43,7 +43,7 @@ export default {
 
 <script lang="ts" setup>
 import Breadcrumb from "primevue/breadcrumb";
-import api from "@/api/test.js";
+import api from "@/api/test";
 import { ref, reactive, watchEffect, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import emitter from "@/util/emitter";
