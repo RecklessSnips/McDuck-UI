@@ -36,76 +36,66 @@
     <h1 class="ms-3">{{ title }}</h1>
     <Divider />
     <div class="card">
-      <DataView :value="productList" dataKey="id">
-        <template #grid="slotProps">
-          <div class="row g-0">
-            <div
-              v-for="product in productList"
-              :key="product.product_id"
-              class="col-12 col-sm-6 col-md-4 col-xl-3 p-2"
-            >
-              <div
-                class="product card border-1 border border-secondary p-2 d-flex flex-column"
-              >
-                <!-- 商品图片和 Tag -->
-                <div
-                  class="product-content d-flex justify-content-center align-items-center p-2"
-                >
-                  <div class="img-container">
-                    <img
-                      class="rounded-circle"
-                      :src="product.image_path"
-                      :alt="product.product_name"
-                      style="height: 100%; width: 100%"
-                    />
-                    <Tag
-                      :value="product.stock_quantity"
-                      :severity="getSeverity(product)"
-                      class="position-absolute"
-                      style="left: 4px; top: 4px"
-                    ></Tag>
-                  </div>
-                </div>
-                <!-- 商品描述 -->
-                <div class="pt-2 pb-1">
-                  <!-- 商品类型，名称，评价 -->
-                  <div
-                    class="d-flex justify-content-between align-items-start gap-2"
-                  >
-                    <div class="product-list" @click="checkProduct(product)">
-                      <span class="font-weight-medium text-secondary text-sm">{{
-                        product.author
-                      }}</span>
-                      <div class="h5 mt-1">{{ product.product_name }}</div>
-                    </div>
-                    <div class="bg-light p-1 rounded-pill">
-                      <div
-                        class="bg-white d-flex align-items-center gap-2 justify-content-center py-1 px-2 rounded-pill"
-                        style="
-                          box-shadow:
-                            0px 1px 2px 0px rgba(0, 0, 0, 0.04),
-                            0px 1px 2px 0px rgba(0, 0, 0, 0.06);
-                        "
-                      >
-                        <span class="text-dark font-weight-medium text-sm">{{
-                          product.review_star
-                        }}</span>
-                        <i class="pi pi-star-fill text-warning"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- 商品价格，购买按钮，收藏按钮 -->
-                  <div class="d-flex flex-column gap-4 mt-4">
-                    <span class="h4 font-weight-bold text-dark"
-                      >${{ product.price }}</span
-                    >
-                  </div>
-                </div>
-              </div>
+      <div class="products-container">
+        <div
+          v-for="product in productList"
+          :key="product.product_id"
+          class="product card border-1 border border-secondary p-2 d-flex flex-column"
+        >
+          <!-- 商品图片和 Tag -->
+          <div
+            class="product-content d-flex justify-content-center align-items-center p-2"
+          >
+            <div class="img-container">
+              <img
+                class="rounded-circle"
+                :src="product.image_path"
+                :alt="product.product_name"
+                style="height: 100%; width: 100%"
+              />
+              <Tag
+                :value="product.stock_quantity"
+                :severity="getSeverity(product)"
+                class="position-absolute"
+                style="left: 4px; top: 4px"
+              ></Tag>
             </div>
           </div>
-        </template>
-      </DataView>
+          <!-- 商品描述 -->
+          <div class="product-details pt-2 pb-1">
+            <div
+              class="d-flex justify-content-between align-items-start gap-2"
+              @click="checkProduct(product)"
+            >
+              <span class="font-weight-medium text-secondary text-sm">
+                {{ product.author }}
+              </span>
+              <div class="h5 mt-1">{{ product.product_name }}</div>
+            </div>
+            <div class="bg-light p-1 rounded-pill">
+              <div
+                class="bg-white d-flex align-items-center gap-2 justify-content-center py-1 px-2 rounded-pill"
+                style="
+                  box-shadow:
+                    0px 1px 2px rgba(0, 0, 0, 0.04),
+                    0px 1px 2px rgba(0, 0, 0, 0.06);
+                "
+              >
+                <span class="text-dark font-weight-medium text-sm">
+                  {{ product.review_star }}
+                </span>
+                <i class="pi pi-star-fill text-warning"></i>
+              </div>
+            </div>
+            <!-- 商品价格，购买按钮，收藏按钮 -->
+            <div class="product-price d-flex flex-column gap-4 mt-4">
+              <span class="h4 font-weight-bold text-dark"
+                >${{ product.price }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -138,10 +128,10 @@ import type { Product } from "@/pages/Product/types";
 const currentUserStore = useCurrentUserStore();
 let { skipRandomProducts } = storeToRefs(currentUserStore);
 
-const URL = "http://localhost:8080";
+const URL = import.meta.env.VITE_API_BASE_URL;
 let productList = ref<Product[]>([]);
 let keyword = ref("");
-const layout = ref('grid');
+const layout = ref("grid");
 let isReady = ref(false);
 
 let checked = ref(false);

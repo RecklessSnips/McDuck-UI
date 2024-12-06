@@ -1,5 +1,5 @@
 import { ref, reactive, onBeforeMount, watch } from 'vue'
-const URL = 'http://localhost:8080'
+const URL = import.meta.env.VITE_API_BASE_URL;
 
 /*
 Hook最重要的，是如果我import了这个hook，则将会在所引用的component里执行这个hook
